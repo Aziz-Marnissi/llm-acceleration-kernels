@@ -92,8 +92,7 @@ Each kernel includes Python visualization scripts for:
 
 ```
 ├── kernels/           # HLS source (.cpp/.h) for each of the 6 kernels
-├── benchmarks/        # Python scripts + plots
-├── docs/               # Architecture diagrams, internship report
+├── benchmarks/        # Python scripts + plots              
 └── README.md
 ```
 

@@ -54,3 +54,22 @@ Each kernel includes Python visualization scripts for:
 Internship at WiseCorp — Supervisors: Nizar Tlili, Yosri Gafsaoui
 
 ---
+
+## 📈 Selected Plots
+
+**Speedup vs. problem size**
+
+![Matmul Speedup](Screenshot%20from%202026-08-12%2011-27-00.png)
+![RoPE Speedup](Screenshot%20from%202026-08-12%2011-27-13.png)
+![SiLU Speedup](Screenshot%20from%202026-08-12%2011-27-24.png)
+![Softmax Speedup](Screenshot%20from%202026-08-12%2011-27-47.png)
+![Greedy Sampler Speedup](Screenshot%20from%202026-08-12%2011-28-15.png)
+
+**Quantization: FP32 vs FP16 vs INT4**
+
+![Matmul Accuracy](Screenshot%20from%202026-08-12%2011-28-46.png)
+![Matmul Latency](Screenshot%20from%202026-08-12%2011-29-02.png)
+![RoPE Accuracy](Screenshot%20from%202026-08-12%2011-29-10.png)
+![RoPE Latency](Screenshot%20from%202026-08-12%2011-29-28.png)
+![SiLU Accuracy](silu_precision.png)
+![SiLU Latency](Screenshot%20from%202026-08-12%2011-29-43.png)

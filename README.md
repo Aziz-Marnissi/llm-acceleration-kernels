@@ -91,10 +91,24 @@ Each kernel includes Python visualization scripts for:
 ## 📁 Structure
 
 ```
-├── kernels/           # HLS source (.cpp/.h) for each of the 6 kernels
-├── benchmarks/        # Python scripts + plots              
+├── matmul.cpp / tb_matmul.cpp
+├── rmsnorm.cpp / rmsnorm_tb.cpp
+├── rope.cpp / rope_tables.h / rope_tb.cpp
+├── sg.cpp / sg_tb.cpp              # greedy sampler
+├── silu.cpp / silu_tb.cpp / sigmoid_lut.h
+├── softmax.cpp / softmax_tb.cpp
+├── *_fp16.cpp / *_int4.cpp         # quantized kernel variants
+├── plots/                          # benchmark & accuracy plots
 └── README.md
 ```
+
+> ⚠️ **Note**: for each kernel's bitstream deployment, the `.bit` and `.hwh` files must share the **exact same base filename** (e.g. `rope_kernel.bit` + `rope_kernel.hwh`). The PYNQ driver matches them by name — a mismatched/stale `.hwh` silently produces an incorrect register map without raising an error.
+
+### Decoder Layer Pipeline
+
+![Decoder layer pipeline](decoder_pipeline.png)
+
+Each block maps to one of the kernels above: RMSNorm → QKV Projection (Matmul) → RoPE → Causal Attention → Output Projection → residual add → RMSNorm → Gate/Up Projection → SiLU → Down Projection → residual add.
 
 ## 👤 Author
 
@@ -107,17 +121,17 @@ Internship at WiseCorp — Supervisors: Nizar Tlili, Yosri Gafsaoui
 
 **Speedup vs. problem size**
 
-![Matmul Speedup](Screenshot%20from%202026-08-12%2011-27-00.png)
-![RoPE Speedup](Screenshot%20from%202026-08-12%2011-27-13.png)
-![SiLU Speedup](Screenshot%20from%202026-08-12%2011-27-24.png)
-![Softmax Speedup](Screenshot%20from%202026-08-12%2011-27-47.png)
-![Greedy Sampler Speedup](Screenshot%20from%202026-08-12%2011-28-15.png)
+![Matmul Speedup](matmul_speedup.png)
+![RoPE Speedup](rope_speedup.png)
+![SiLU Speedup](silu_speedup.png)
+![Softmax Speedup](softmax_speedup.png)
+![Greedy Sampler Speedup](greedy_sampler_speedup.png)
 
 **Quantization: FP32 vs FP16 vs INT4**
 
-![Matmul Accuracy](Screenshot%20from%202026-08-12%2011-28-46.png)
-![Matmul Latency](Screenshot%20from%202026-08-12%2011-29-02.png)
-![RoPE Accuracy](Screenshot%20from%202026-08-12%2011-29-10.png)
-![RoPE Latency](Screenshot%20from%202026-08-12%2011-29-28.png)
-![SiLU Accuracy](silu_precision.png)
-![SiLU Latency](Screenshot%20from%202026-08-12%2011-29-43.png)
+![Matmul Accuracy](matmul_accuracy.png)
+![Matmul Latency](matmul_latency.png)
+![RoPE Accuracy](rope_accuracy.png)
+![RoPE Latency](rope_latency.png)
+![SiLU Accuracy](silu_accuracy.png)
+![SiLU Latency](silu_latency.png)

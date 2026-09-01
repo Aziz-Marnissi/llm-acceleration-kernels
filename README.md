@@ -78,7 +78,6 @@ Both schemes are symmetric, uniform, signed 4-bit (range [-7, 7]). **Key finding
 
 **Note**: int4 always saves BRAM/DSP but *increases* FF/LUT — operands are dequantized to floating point before arithmetic, so the quantize/dequantize wrapper logic adds fabric overhead.
 
-
 Each kernel includes Python visualization scripts for:
 - Latency, throughput & speedup vs. problem size (FPGA vs. CPU)
 - Numerical error (MaxErr) & correctness checks
@@ -91,14 +90,18 @@ Each kernel includes Python visualization scripts for:
 ## 📁 Structure
 
 ```
-├── matmul.cpp / tb_matmul.cpp
-├── rmsnorm.cpp / rmsnorm_tb.cpp
-├── rope.cpp / rope_tables.h / rope_tb.cpp
-├── sg.cpp / sg_tb.cpp              # greedy sampler
-├── silu.cpp / silu_tb.cpp / sigmoid_lut.h
-├── softmax.cpp / softmax_tb.cpp
-├── *_fp16.cpp / *_int4.cpp         # quantized kernel variants
-├── plots/                          # benchmark & accuracy plots
+├── acceleration/                   # baseline float32 kernels + testbenches
+│   ├── matmul/                     # matmul.cpp / tb_matmul.cpp
+│   ├── rmsnorm/                    # rmsnorm.cpp / rmsnorm_tb.cpp
+│   ├── rope/                       # rope.cpp / rope_tables.h / rope_tb.cpp
+│   ├── silu/                       # silu.cpp / silu_tb.cpp / sigmoid_lut.h
+│   ├── softmax/                    # softmax.cpp / softmax_tb.cpp
+│   └── greedy_sampler/             # sg.cpp / sg_tb.cpp
+├── quantization/                   # fp16 / int4 kernel variants + testbenches + weights
+│   ├── matmul/
+│   ├── rope/
+│   └── silu/
+├── results/                        # benchmark, accuracy & speedup plots
 └── README.md
 ```
 
@@ -106,7 +109,7 @@ Each kernel includes Python visualization scripts for:
 
 ### Decoder Layer Pipeline
 
-![Decoder layer pipeline](decoder_pipeline.png)
+![Decoder layer pipeline](results/decoder_pipeline.png)
 
 Each block maps to one of the kernels above: RMSNorm → QKV Projection (Matmul) → RoPE → Causal Attention → Output Projection → residual add → RMSNorm → Gate/Up Projection → SiLU → Down Projection → residual add.
 
@@ -121,17 +124,17 @@ Internship at WiseCorp — Supervisors: Nizar Tlili, Yosri Gafsaoui
 
 **Speedup vs. problem size**
 
-![Matmul Speedup](matmul_speedup.png)
-![RoPE Speedup](rope_speedup.png)
-![SiLU Speedup](silu_speedup.png)
-![Softmax Speedup](softmax_speedup.png)
-![Greedy Sampler Speedup](greedy_sampler_speedup.png)
+![Matmul Speedup](results/matmul_speedup.png)
+![RoPE Speedup](results/rope_speedup.png)
+![SiLU Speedup](results/silu_speedup.png)
+![Softmax Speedup](results/softmax_speedup.png)
+![Greedy Sampler Speedup](results/greedy_sampler_speedup.png)
 
 **Quantization: FP32 vs FP16 vs INT4**
 
-![Matmul Accuracy](matmul_accuracy.png)
-![Matmul Latency](matmul_latency.png)
-![RoPE Accuracy](rope_accuracy.png)
-![RoPE Latency](rope_latency.png)
-![SiLU Accuracy](silu_accuracy.png)
-![SiLU Latency](silu_latency.png)
+![Matmul Accuracy](results/matmul_accuracy.png)
+![Matmul Latency](results/matmul_latency.png)
+![RoPE Accuracy](results/rope_accuracy.png)
+![RoPE Latency](results/rope_latency.png)
+![SiLU Accuracy](results/silu_accuracy.png)
+![SiLU Latency](results/silu_latency.png)
